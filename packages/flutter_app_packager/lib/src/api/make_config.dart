@@ -61,22 +61,13 @@ class MakeConfig {
 
     String platform = this.platform;
     switch (Abi.current()) {
-      case Abi.androidArm64:
+      case Abi.linuxArm64:
         platform = 'arm64';
         break;
       case Abi.linuxX64:
         platform = 'x64';
         break;
     }
-
-    print(appName);
-    print(appVersion);
-    print(appBuildName);
-    print(appBuildNumber);
-    print(buildMode);
-    print(platform);
-    print(flavor);
-    print(channel);
 
     Map<String, dynamic> variables = {
       'is_installer': isInstaller,
