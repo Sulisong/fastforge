@@ -119,7 +119,7 @@ class AppPackageMakerDeb extends AppPackageMaker {
       '--build',
       '--root-owner-group',
       packagingDirectory.path,
-      makeConfig.outputFile.path,
+      makeConfig.suOutputFile(makeConfig.packageName).path,
     ]);
 
     if (processResult.exitCode != 0) {

@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter_app_packager/src/api/make_error.dart';
@@ -6,7 +7,7 @@ import 'package:pub_semver/pub_semver.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
 const _kArtifactName =
-    '{{name}}{{#flavor}}-{{flavor}}{{/flavor}}-{{build_name}}+{{build_number}}{{#is_profile}}-{{build_mode}}{{/is_profile}}-{{platform}}{{#is_installer}}-setup{{/is_installer}}{{#ext}}.{{ext}}{{/ext}}';
+    '{{name}}{{#flavor}}-{{flavor}}{{/flavor}}_{{build_name}}+{{build_number}}{{#is_profile}}-{{build_mode}}{{/is_profile}}-{{platform}}{{#is_installer}}-setup{{/is_installer}}{{#ext}}.{{ext}}{{/ext}}';
 const _kArtifactNameWithChannel =
     '{{name}}-{{channel}}-{{build_name}}+{{build_number}}{{#is_profile}}-{{build_mode}}{{/is_profile}}-{{platform}}{{#is_installer}}-setup{{/is_installer}}{{#ext}}.{{ext}}{{/ext}}';
 
@@ -51,6 +52,56 @@ class MakeConfig {
       throw MakeError('Direct output is not a file');
     }
     return File(outputArtifactPath);
+  }
+
+  File suOutputFile(String package) {
+    String useArtifactName = _kArtifactName;
+    if (channel != null) useArtifactName = _kArtifactNameWithChannel;
+    if (artifactName != null) useArtifactName = artifactName!;
+
+    String platform = this.platform;
+    switch (Abi.current()) {
+      case Abi.androidArm64:
+        platform = 'arm64';
+        break;
+      case Abi.linuxX64:
+        platform = 'x64';
+        break;
+    }
+
+    print(appName);
+    print(appVersion);
+    print(appBuildName);
+    print(appBuildNumber);
+    print(buildMode);
+    print(platform);
+    print(flavor);
+    print(channel);
+
+    Map<String, dynamic> variables = {
+      'is_installer': isInstaller,
+      'is_profile': buildMode == 'profile',
+      'name': package,
+      'version': appVersion.toString(),
+      'build_name': appBuildName,
+      'build_number': appBuildNumber,
+      'build_mode': buildMode,
+      'platform': platform,
+      'flavor': flavor,
+      'channel': channel,
+      'ext': packageFormat.isEmpty ? null : packageFormat,
+    };
+
+    String filename = Template(useArtifactName).renderString(variables);
+
+    Directory versionOutputDirectory =
+        Directory('${outputDirectory.path}$appVersion');
+
+    if (!versionOutputDirectory.existsSync()) {
+      versionOutputDirectory.createSync(recursive: true);
+    }
+
+    return File('${versionOutputDirectory.path}/$filename');
   }
 
   String get outputArtifactPath {
