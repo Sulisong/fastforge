@@ -65,7 +65,7 @@ class MakeConfig {
         platform = 'arm64';
         break;
       case Abi.linuxX64:
-        platform = 'x64';
+        platform = 'amd64';
         break;
     }
 
