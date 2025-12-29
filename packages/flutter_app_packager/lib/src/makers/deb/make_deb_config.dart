@@ -129,6 +129,7 @@ class MakeDebConfig extends MakeLinuxPackageConfig {
     this.essential = false,
     List<String>? postinstallScripts,
     List<String>? postuninstallScripts,
+    this.zhName,
     this.priority = 'optional',
     this.section = 'x11',
     this.actions,
@@ -156,6 +157,7 @@ class MakeDebConfig extends MakeLinuxPackageConfig {
     return MakeDebConfig(
       displayName: map['display_name'],
       packageName: map['package_name'],
+      zhName: map['zh_name'],
       maintainer:
           "${map['maintainer']['name']} <${map['maintainer']['email']}>",
       coAuthors: (map['co_authors'] as List?)
@@ -228,6 +230,7 @@ class MakeDebConfig extends MakeLinuxPackageConfig {
   String priority;
   String section;
   int installedSize;
+  String? zhName;
   bool? essential;
   String? icon;
   String? genericName;
@@ -294,6 +297,7 @@ class MakeDebConfig extends MakeLinuxPackageConfig {
         'Type': 'Application',
         'Version': appVersion.toString(),
         'Name': displayName,
+        'Name[zh_CN]': zhName,
         'GenericName': genericName,
         'Icon': appBinaryName,
         'Exec': '$appBinaryName %U',
