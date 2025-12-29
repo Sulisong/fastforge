@@ -7,7 +7,7 @@ import 'package:pub_semver/pub_semver.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
 const _kArtifactName =
-    '{{name}}{{#flavor}}-{{flavor}}{{/flavor}}_{{build_name}}+{{build_number}}{{#is_profile}}-{{build_mode}}{{/is_profile}}-{{platform}}{{#is_installer}}-setup{{/is_installer}}{{#ext}}.{{ext}}{{/ext}}';
+    '{{name}}{{#flavor}}-{{flavor}}{{/flavor}}_{{build_name}}+{{build_number}}{{#is_profile}}-{{build_mode}}{{/is_profile}}_{{platform}}{{#is_installer}}-setup{{/is_installer}}{{#ext}}.{{ext}}{{/ext}}';
 const _kArtifactNameWithChannel =
     '{{name}}-{{channel}}-{{build_name}}+{{build_number}}{{#is_profile}}-{{build_mode}}{{/is_profile}}-{{platform}}{{#is_installer}}-setup{{/is_installer}}{{#ext}}.{{ext}}{{/ext}}';
 
