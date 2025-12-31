@@ -93,7 +93,7 @@ class AppPackageMakerDeb extends AppPackageMaker {
     final postinstFile = File(path.join(debianDir, 'postinst'));
     final postrmFile = File(path.join(debianDir, 'postrm'));
     final desktopEntryFile =
-        File(path.join(applicationsDir, '${makeConfig.appBinaryName}.desktop'));
+        File(path.join(applicationsDir, '${makeConfig.packageName}.desktop'));
 
     if (!controlFile.existsSync()) controlFile.createSync();
     if (!postinstFile.existsSync()) postinstFile.createSync();
