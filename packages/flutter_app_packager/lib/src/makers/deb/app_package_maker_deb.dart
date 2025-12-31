@@ -77,13 +77,13 @@ class AppPackageMakerDeb extends AppPackageMaker {
       await iconFile.copy(
         path.join(
           icon128Dir,
-          makeConfig.appBinaryName + path.extension(makeConfig.icon!),
+          makeConfig.packageName + path.extension(makeConfig.icon!),
         ),
       );
       await iconFile.copy(
         path.join(
           icon256Dir,
-          makeConfig.appBinaryName + path.extension(makeConfig.icon!),
+          makeConfig.packageName + path.extension(makeConfig.icon!),
         ),
       );
     }
