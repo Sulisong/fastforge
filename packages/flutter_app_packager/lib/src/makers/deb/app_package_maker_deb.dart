@@ -50,6 +50,11 @@ class AppPackageMakerDeb extends AppPackageMaker {
     final debianDir = path.join(packagingDirectory.path, 'DEBIAN');
     final applicationsDir =
         path.join(packagingDirectory.path, 'usr/share/applications');
+    // Svg图标
+    final iconScalableDir = path.join(
+      packagingDirectory.path,
+      'usr/share/icons/hicolor/scalable/apps',
+    );
     final icon128Dir = path.join(
       packagingDirectory.path,
       'usr/share/icons/hicolor/128x128/apps',
@@ -63,12 +68,28 @@ class AppPackageMakerDeb extends AppPackageMaker {
       debianDir,
       path.join(packagingDirectory.path, 'usr/share', makeConfig.appBinaryName),
       applicationsDir,
-      if (makeConfig.icon != null) ...[icon128Dir, icon256Dir],
+      if (makeConfig.svg != null) iconScalableDir,
+      if (makeConfig.svg == null && makeConfig.icon != null) ...[
+        icon128Dir,
+        icon256Dir,
+      ],
     ]);
 
     if (mkdirProcessResult.exitCode != 0) throw MakeError();
 
-    if (makeConfig.icon != null) {
+    if (makeConfig.svg != null) {
+      final svgFile = File(makeConfig.svg!);
+      if (!svgFile.existsSync()) {
+        throw MakeError("provided svg ${makeConfig.svg} path wasn't found");
+      }
+
+      await svgFile.copy(
+        path.join(
+          iconScalableDir,
+          makeConfig.packageName + path.extension(makeConfig.svg!),
+        ),
+      );
+    } else if (makeConfig.icon != null) {
       final iconFile = File(makeConfig.icon!);
       if (!iconFile.existsSync()) {
         throw MakeError("provided icon ${makeConfig.icon} path wasn't found");
