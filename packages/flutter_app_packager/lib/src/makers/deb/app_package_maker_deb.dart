@@ -66,7 +66,7 @@ class AppPackageMakerDeb extends AppPackageMaker {
     final mkdirProcessResult = await $('mkdir', [
       '-p',
       debianDir,
-      path.join(packagingDirectory.path, 'usr/share', makeConfig.appBinaryName),
+      path.join(packagingDirectory.path, 'opt/apps', makeConfig.packageName),
       applicationsDir,
       if (makeConfig.svg != null) iconScalableDir,
       if (makeConfig.svg == null && makeConfig.icon != null) ...[
@@ -133,7 +133,7 @@ class AppPackageMakerDeb extends AppPackageMaker {
     await $('cp', [
       '-fr',
       '${appDirectory.path}/.',
-      '${packagingDirectory.path}/usr/share/${makeConfig.appBinaryName}/',
+      '${packagingDirectory.path}/opt/apps/${makeConfig.packageName}/',
     ]);
 
     ProcessResult processResult = await $('dpkg-deb', [
