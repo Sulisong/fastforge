@@ -303,7 +303,7 @@ class MakeDebConfig extends MakeLinuxPackageConfig {
         'Name[zh_CN]': zhName,
         'GenericName': genericName,
         'Icon': packageName,
-        'Exec': '$appBinaryName %U',
+        'Exec': '/opt/apps/$packageName/$appBinaryName %U',
         'Actions': actions != null && actions!.isNotEmpty
             ? '${actions!.join(';')};'
             : null,
